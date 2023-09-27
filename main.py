@@ -31,7 +31,9 @@ class SimpleView(discord.ui.View):
       @discord.ui.button(label = "hello", style= discord.ButtonStyle.success)
       async def hello_button(self, interaction: discord.Interaction, button: discord.ui.Button):
             await interaction.response.send_message("Hello world")
-      
+
+print("Hello world!") 
+
 #calculations
 def add(a, b):
       return a + b
@@ -72,6 +74,5 @@ async def button(ctx):
         
         await ctx.send(view = view)
         
-       # message = await ctx.send(view = view)
 
 bot.run(TOKEN)
