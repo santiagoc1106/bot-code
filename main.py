@@ -39,18 +39,18 @@ class SimpleView(discord.ui.View):
             await interaction.response.send_message("Cancelling")
 
 class TimeoutView(discord.ui.View):
-
       foo = None 
 
-async def disable_all_items(self):
-      for item in self.children:
-            item.disabled = True
-      await self.message.edit(view = self)
+      async def disable_all_items(self):
+            for item in self.children:
+                item.disabled = True
+
+            await self.message.edit(view = self)
 
 
-async def on_timeout(self) -> None:
-      await self.message.channel.send("Timeout")
-      await self.disable_all_items()
+      async def on_timeout(self) -> None:
+            await self.message.channel.send("Timeout")
+            await self.disable_all_items()
 
       @discord.ui.button(label = "hello", style= discord.ButtonStyle.success)
       async def hello_button(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -100,17 +100,18 @@ async def button(ctx):
        # a = int(num1) 
        # b = int(num2)
 
-        view = SimpleView()
+        view = TimeoutView(timeout = 5)
         
         message = await ctx.send(view=view)
 
         view.message = message
 
         await view.wait()
+
         await view.disable_all_items()
 
         if view.foo is None:
-              print("Tiemout")
+              print("Timeout")
         elif view.foo == True:
               print("ok")
         else:
