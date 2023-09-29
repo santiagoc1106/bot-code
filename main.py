@@ -27,12 +27,42 @@ intents.reactions = True
 #client.run(TOKEN)
 
 bot = commands.Bot(command_prefix = '$', intents = intents)
+
+
+
 class SimpleView(discord.ui.View):
       @discord.ui.button(label = "hello", style= discord.ButtonStyle.success)
       async def hello_button(self, interaction: discord.Interaction, button: discord.ui.Button):
             await interaction.response.send_message("Hello world")
+      @discord.ui.button(label="cancel", style=discord.ButtonStyle.red)
+      async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+            await interaction.response.send_message("Cancelling")
 
-print("Hello world!") 
+class TimeoutView(discord.ui.View):
+
+      foo = None 
+
+async def disable_all_items(self):
+      for item in self.children:
+            item.disabled = True
+      await self.message.edit(view = self)
+
+
+async def on_timeout(self) -> None:
+      await self.message.channel.send("Timeout")
+      await self.disable_all_items()
+
+      @discord.ui.button(label = "hello", style= discord.ButtonStyle.success)
+      async def hello_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+            await interaction.response.send_message("Hello world")
+            self.foo = True 
+            self.stop()
+
+      @discord.ui.button(label="cancel", style=discord.ButtonStyle.red)
+      async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+            await interaction.response.send_message("Cancelling")
+            self.foo = False
+            self.stop()
 
 #calculations
 def add(a, b):
@@ -72,7 +102,20 @@ async def button(ctx):
 
         view = SimpleView()
         
-        await ctx.send(view = view)
+        message = await ctx.send(view=view)
+
+        view.message = message
+
+        await view.wait()
+        await view.disable_all_items()
+
+        if view.foo is None:
+              print("Tiemout")
+        elif view.foo == True:
+              print("ok")
+        else:
+              print("cancel")
         
+
 
 bot.run(TOKEN)
