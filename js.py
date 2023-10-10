@@ -16,12 +16,12 @@ intents.message_content = True
 bot = commands.Bot(command_prefix = '!', intents = intents)
 
 def load_num(num):
-     with open("num.json", "r") as f:
+    with open("num.json", "r") as f:
         data = json.load(f)
 
-     data["num"] = None
+    data["num"] = None
 
-     with open("num.json", "w") as f:
+    with open("num.json", "w") as f:
        json.dump(data, f, indent = 2)
 
 load_num(None)
@@ -29,7 +29,7 @@ load_num(None)
 @bot.command()
 async def num_store(ctx, num):
     load_num(num)
-    await ctx.send(f"NUM IS SAVED ad {num}")
+    await ctx.send(f"Saved as {num}")
 
 @bot.command()
 async def print_num(ctx):
