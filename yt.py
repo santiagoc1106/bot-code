@@ -74,7 +74,7 @@ async def leave_me(ctx):
 
 #1 play()
 
-@bot.command
+@bot.command()
 async def playsong(ctx,url):
     
     try :
