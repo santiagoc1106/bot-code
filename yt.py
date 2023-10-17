@@ -2,8 +2,8 @@ import discord
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
-import youtube_dl
-
+import yt_dlp
+import asyncio
 
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
@@ -12,7 +12,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix = ".", intents = intents)
-youtube_dl.utils.bug_reports_message = lambda: ''
+yt_dlp.utils.bug_reports_message = lambda: ''
 #using youtube_dl source: "https://medium.com/pythonland/build-a-discord-bot-in-python-that-plays-music-and-send-gifs-856385e605a1"
 ytdl_format_options = {
     'format': 'bestaudio/best',
@@ -31,7 +31,7 @@ ffmpeg_options = {
     'options': '-vn'
 }
 
-ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
+ytdl = yt_dlp.YoutubeDL(ytdl_format_options)
 
 class YTDLSource(discord.PCMVolumeTransformer):
     def __init__(self, source, *, data, volume=0.5):
