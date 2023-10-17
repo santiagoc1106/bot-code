@@ -27,7 +27,7 @@ class JokeCaller(discord.ui.View):
         await self.disable_all_items()
     joke = None
     @discord.ui.button(label = "get joke", style = discord.ButtonStyle.success)
-    async def joking(self, interaction: discord.Interaction, button : discord.ui.Button):
+    async def jokijng(self, interaction: discord.Interaction, button : discord.ui.Button):
         await interaction.response.send_message("making joke...")
 
         joke_response = requests.get("https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&format=txt&type=single")
