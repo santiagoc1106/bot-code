@@ -55,30 +55,42 @@ class YTDLSource(discord.PCMVolumeTransformer):
 @bot.command()
 async def join_me(ctx):
     if not ctx.message.author.voice:
-        await ctx.send("{} not connected to a voice channel".format(ctx.message.author.name))
+        await ctx.send("{} not connected to a voice channel bub".format(ctx.message.author.name))
         return
     else:
         channel = ctx.message.author.voice.channel
     await channel.connect()
 
+#makes bot leave channel
 @bot.command()
-
 async def leave_me(ctx):
     voice_client = ctx.message.guild.voice_client
     if voice_client.is_connected():
         await voice_client.disconnect()
     else:
-        await ctx.send("The bot is not connected to a voice channel.")
+        await ctx.send("I am not connected to a voice channel bub")
 
 #commands for music
 
 #1 play()
 
 @bot.command
-async def play(ctx,url):
+async def playsong(ctx,url):
+    
     try :
+        #sees if bot is in the vc
         server = ctx.message.guild
+        voice_channel = server.voice_client
 
+        async with ctx.typing():
+            #grabs file from downloaded url
+            filename = await YTDLSource.from_url(url, loop=bot.loop)
+            #plays song using ffmpeg
+            voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg.exe", source=filename))
+            await ctx.send('**Now playing:** {}'.format(filename))
+
+    except:
+        await ctx.send("I am not connected to a voice channel bub")
 
 
 bot.run(TOKEN)
